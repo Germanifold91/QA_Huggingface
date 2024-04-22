@@ -1,0 +1,4 @@
+""
+Execution parameters such as paths, file names, etc. are defined here. 
+The parameters are used in the code to access the data files, save the results, etc. 
+""""
