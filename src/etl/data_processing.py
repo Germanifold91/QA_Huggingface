@@ -5,6 +5,7 @@ from datasets import Dataset
 import pandas as pd
 import os
 import markdown
+import yaml
 
 def create_file_table(folder_path: str, 
                       destination_path: str = None, 
@@ -165,3 +166,15 @@ def generate_master(de_params: Dict[str,Any]) -> None:
                   file_path_column="TEXT_FILE_PATH",
                   text_column_name="TEXT",
                   save_path=arrow_path)
+    
+if __name__ == "__main__":
+
+    # Load the YAML configuration file
+    with open("conf/local.yml", "r") as yamlfile:
+        config = yaml.safe_load(yamlfile)  # Use safe_load to load the YAML configuration file safely
+
+    de_params = config.get("data_processing_params")
+    if de_params is None:
+        raise ValueError("Invalid YAML configuration file. Missing 'data_processing_params' section.")
+
+    generate_master(de_params)
