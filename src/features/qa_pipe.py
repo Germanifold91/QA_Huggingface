@@ -1,9 +1,11 @@
 from src.features.qa_class import DocumentAssistant  
-from datasets import Dataset
-
+from argparse import ArgumentParser
+from datasets import Dataset, load_from_disk
+from typing import List, Tuple
+import yaml
 
 def main(dataset: Dataset, 
-         question: str):
+         question: str) -> Tuple[str, List[str]]:
     """
     Process the given dataset and question using the DocumentAssistant model.
     
@@ -24,3 +26,25 @@ def main(dataset: Dataset,
     print("Relevant document(s):", files_names)
 
     return answer, files_names
+
+if __name__ == "__main__":
+        
+    # Load the YAML configuration file
+    with open("conf/local.yml", "r") as yamlfile:
+        config = yaml.safe_load(yamlfile)  # Use safe_load to load the YAML configuration file safely
+
+    parser = ArgumentParser(description="Answer questions based on a dataset using DocumentAssistant.")
+    parser.add_argument('--question', type=str, default=None, help="The question you want answered. Leave empty to prompt.")
+    
+    args = parser.parse_args()
+
+    # If no question was provided via command-line arguments, prompt the user
+    if args.question is None:
+        args.question = input("Please write your question here: ")
+
+    dataset_path = config["data_processing_params"]["arrowdf_path"]
+    master_dataset = load_from_disk(dataset_path)
+
+    # Process the dataset and question
+    answer, files = main(dataset=master_dataset, question=args.question)
+    output_dict = {"question": args.question, "answer": answer, "document_path": files}
