@@ -11,6 +11,8 @@ __pycache__/
 notebooks/
 # Data Folder
 data/
+# local config
+conf/local.yml
 
 # Distribution / packaging
 .Python
