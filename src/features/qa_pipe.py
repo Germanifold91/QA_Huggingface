@@ -1,4 +1,5 @@
-from src.features.qa_class import DocumentAssistant  
+from src.features.qa_class import DocumentAssistant
+from src.model_tracking.tracking import track_execution  
 from argparse import ArgumentParser
 from datasets import Dataset, load_from_disk
 from typing import List, Tuple
@@ -19,13 +20,14 @@ def main(dataset: Dataset,
     doc_assistant = DocumentAssistant(model_ckpt="sentence-transformers/multi-qa-mpnet-base-dot-v1")
     
     # Use the DocumentAssistant to process the question
-    answer, files_names = doc_assistant.answer_pipeline(master_dataset=dataset, question=question)
+    answer, files_names, score, start, end  = doc_assistant.answer_pipeline(master_dataset=dataset, question=question)
     
     # Print the answer and the names of relevant files
     print("Answer:", answer)
     print("Relevant document(s):", files_names)
+    print("Score:", score)
 
-    return answer, files_names
+    return answer, files_names, score, start, end
 
 if __name__ == "__main__":
         
@@ -46,5 +48,14 @@ if __name__ == "__main__":
     master_dataset = load_from_disk(dataset_path)
 
     # Process the dataset and question
-    answer, files = main(dataset=master_dataset, question=args.question)
-    output_dict = {"question": args.question, "answer": answer, "document_path": files}
+    answer, files, score, start, end = main(dataset=master_dataset, question=args.question)
+    output_dict = {"question": args.question, 
+                   "answer": answer, 
+                   "document_path": files,
+                   "score": score,
+                   "start": start,
+                   "end": end}
+    
+    csv_tracking_path = config["data_processing_params"]["tracking_file_path"]
+    json_tracking_path = config["data_processing_params"]["json_path"]
+    track_execution(output_dict, csv_tracking_path, json_tracking_path)

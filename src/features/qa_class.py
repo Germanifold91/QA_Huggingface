@@ -68,7 +68,7 @@ class DocumentAssistant:
         
         result = qa_pipeline(question=question, context=context, max_answer_len=100)
         
-        return result['answer'], file_names
+        return result['answer'], file_names, result['score'], result['start'], result['end']
     
     def answer_pipeline(self, master_dataset: Dataset, question: str) -> Tuple[str, List[str]]:
         """
@@ -76,9 +76,9 @@ class DocumentAssistant:
         """
         texts_paths = self.text_search(master_dataset=master_dataset, question=question)
         
-        answer, files_names = self.question_answering(question=question, paths_list=texts_paths)
+        answer, files_names, score, start, end = self.question_answering(question=question, paths_list=texts_paths)
 
         # Replace '.txt' with '.md' in the file names
         md_files_names = [fname.replace('.txt', '.md') for fname in files_names]
         
-        return answer, md_files_names
+        return answer, md_files_names, score, start, end
