@@ -56,6 +56,5 @@ if __name__ == "__main__":
                    "start": start,
                    "end": end}
     
-    csv_tracking_path = config["data_processing_params"]["tracking_file_path"]
-    json_tracking_path = config["data_processing_params"]["json_path"]
-    track_execution(output_dict, csv_tracking_path, json_tracking_path)
+    json_tracking_path = config["data_processing_params"]["tracking_json_path"]
+    track_execution(output_dict, json_tracking_path)

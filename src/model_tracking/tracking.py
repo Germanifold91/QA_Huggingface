@@ -3,27 +3,9 @@ import pandas as pd
 import json
 
 def track_execution(qa_pipe_output: Dict[str, any], 
-                    output_file: str, 
                     json_file: str) -> None:
     """
-    Track the execution of the QA pipe output and save the tracking data as a CSV file.
-
-    Args:
-        qa_pipe_output (List[Dict[str, any]]): The output of the QA pipe.
-        output_file (str): The path to save the tracking data as a CSV file.
-        json_file (str): The path to save the tracking data as a JSON file.
-
-    Returns:
-        None
     """
-    # Check if the tracking file already exists
-    try:
-        tracking_df = pd.read_csv(output_file)
-    except FileNotFoundError:
-        # Create an empty DataFrame if the file doesn't exist
-        print("Tracking file not found. Creating a new one.")
-        tracking_df = pd.DataFrame()
-
     # Create a list to store the tracking data
     tracking_data = []
 
@@ -39,18 +21,6 @@ def track_execution(qa_pipe_output: Dict[str, any],
 
     # Append the tracking entry to the list
     tracking_data.append(tracking_entry)
-
-    # Create a pandas DataFrame from the tracking data
-    new_tracking_df = pd.DataFrame(tracking_data)
-
-    # Append the new tracking data to the existing DataFrame
-    tracking_df = pd.concat([tracking_df, new_tracking_df], ignore_index=True)
-
-    # Save the DataFrame as a CSV file
-    tracking_df.to_csv(output_file, index=False)
-
-    # Convert the tracking data to a JSON object
-    tracking_json = json.dumps(tracking_data)
 
     # Check if the JSON file already exists
     try:
