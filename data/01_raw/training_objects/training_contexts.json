@@ -1,0 +1,84 @@
+{
+    "documents": [
+        {
+            "title": "France",
+            "contexts": [
+                "France, officially known as the French Republic, is a country located in Western Europe. It is known for its rich history, culture, and cuisine.",
+                "Paris is the capital city of France and is famous for its iconic landmarks such as the Eiffel Tower and the Louvre Museum.",
+                "French is the official language of France and is spoken by the majority of the population."
+            ],
+            "questions_answers": [
+                {
+                    "context_index": 0,
+                    "question": "Where is France located?",
+                    "answer": "a country located in Western Europe"
+                },
+                {
+                    "context_index": 0,
+                    "question": "What is France known for?",
+                    "answer": "known for its rich history, culture, and cuisine"
+                },
+                {
+                    "context_index": 1,
+                    "question": "What is the capital city of France?",
+                    "answer": "Paris is the capital city of France"
+                },
+                {
+                    "context_index": 1,
+                    "question": "What are some iconic landmarks in France?",
+                    "answer": "famous for its iconic landmarks such as the Eiffel Tower and the Louvre Museum"
+                },
+                {
+                    "context_index": 2,
+                    "question": "What is the official language of France?",
+                    "answer": "French is the official language of France"
+                },
+                {
+                    "context_index": 2,
+                    "question": "What language is spoken by the majority of the population in France?",
+                    "answer": "spoken by the majority of the population"
+                }
+            ]
+        },
+        {
+            "title": "Italy",
+            "contexts": [
+                "Italy, officially known as the Italian Republic, is a country located in Southern Europe. It is known for its rich history, culture, and cuisine, particularly pizza and pasta.",
+                "Rome is the capital city of Italy and is famous for its ancient ruins such as the Colosseum and the Roman Forum.",
+                "Italian is the official language of Italy and is spoken by the majority of the population."
+            ],
+            "questions_answers": [
+                {
+                    "context_index": 0,
+                    "question": "Where is Italy located?",
+                    "answer": "a country located in Southern Europe"
+                },
+                {
+                    "context_index": 0,
+                    "question": "What is Italy known for?",
+                    "answer": "known for its rich history, culture, and cuisine, particularly pizza and pasta"
+                },
+                {
+                    "context_index": 1,
+                    "question": "What is the capital city of Italy?",
+                    "answer": "Rome is the capital city of Italy"
+                },
+                {
+                    "context_index": 1,
+                    "question": "What are some ancient ruins in Italy?",
+                    "answer": "famous for its ancient ruins such as the Colosseum and the Roman Forum"
+                },
+                {
+                    "context_index": 2,
+                    "question": "What is the official language of Italy?",
+                    "answer": "Italian is the official language of Italy"
+                },
+                {
+                    "context_index": 2,
+                    "question": "What language is spoken by the majority of the population in Italy?",
+                    "answer": "spoken by the majority of the population"
+                }
+            ]
+        }
+    ]
+}
