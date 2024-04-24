@@ -12,6 +12,7 @@ notebooks/
 # Data Folder
 data/*
 !data/01_raw/training_objects/training_contexts.json
+!data/03_model_output/
 # local config
 conf/local.yml
 
