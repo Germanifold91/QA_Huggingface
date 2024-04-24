@@ -1,4 +1,5 @@
 from typing import List, Dict, Union
+from datasets import Dataset
 import json
 
 
@@ -50,6 +51,40 @@ def prepare_train_data(documents: List[Dict[str, Union[str, List[str], List[Dict
     
     return train_data
 
+def load_and_format_data(data_file: str, save_dir: str) -> Dataset:
+    """
+    """
+    # Load the data from a JSON file
+    with open(data_file, 'r') as f:
+        data = json.load(f)
+
+    # Prepare the data in the format required for fine-tuning
+    formatted_data = {
+        'title': [],
+        'context': [],
+        'question': [],
+        'answers': [],
+    }
+    for document in data['documents']:
+        title = document['title']
+        for qa in document['questions_answers']:
+            context = document['contexts'][qa['context_index']]
+            formatted_data['title'].append(title)
+            formatted_data['context'].append(context)
+            formatted_data['question'].append(qa['question'])
+            formatted_data['answers'].append({
+                'text': [qa['answer']],
+                'answer_start': [context.find(qa['answer'])],
+            })
+
+    # Convert the data to a Hugging Face Dataset
+    dataset = Dataset.from_dict(formatted_data)
+
+    # Save the dataset to a directory
+    dataset.save_to_disk(save_dir)
+
+    return dataset
+
 if __name__ == "__main__":
     # Load the training data
     with open("data/01_raw/training_objects/training_contexts.json", 'r') as f:
@@ -62,6 +97,7 @@ if __name__ == "__main__":
     train_data = prepare_train_data(documents=documents, 
                                     output_path="data/02_intermediate/training_data/train_data.json")
     
-
+    # Load and format the training data
+    dataset = load_and_format_data()
 
 
