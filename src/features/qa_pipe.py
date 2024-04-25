@@ -35,6 +35,7 @@ if __name__ == "__main__":
     with open("conf/local.yml", "r") as yamlfile:
         config = yaml.safe_load(yamlfile)  # Use safe_load to load the YAML configuration file safely
 
+    # Parse command-line arguments
     parser = ArgumentParser(description="Answer questions based on a dataset using DocumentAssistant.")
     parser.add_argument('--question', type=str, default=None, help="The question you want answered. Leave empty to prompt.")
     
@@ -44,6 +45,7 @@ if __name__ == "__main__":
     if args.question is None:
         args.question = input("Please write your question here: ")
 
+    # Load the dataset from disk
     dataset_path = config["data_processing_params"]["arrowdf_path"]
     master_dataset = load_from_disk(dataset_path)
 
@@ -56,5 +58,5 @@ if __name__ == "__main__":
                    "start": start,
                    "end": end}
     
-    json_tracking_path = config["data_processing_params"]["tracking_json_path"]
+    json_tracking_path = config["model_tracking_params"]["tracking_json_path"]
     track_execution(output_dict, json_tracking_path)

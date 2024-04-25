@@ -1,6 +1,7 @@
 from typing import List, Dict, Union
 from datasets import Dataset
 import json
+import yaml
 
 
 def prepare_train_data(documents: List[Dict[str, Union[str, List[str], List[Dict[str, str]]]]], 
@@ -49,7 +50,6 @@ def prepare_train_data(documents: List[Dict[str, Union[str, List[str], List[Dict
     with open(output_path, 'w') as f:
         json.dump(train_data, f)
     
-    return train_data
 
 def load_and_format_data(data_file: str, save_dir: str) -> Dataset:
     """
@@ -83,21 +83,27 @@ def load_and_format_data(data_file: str, save_dir: str) -> Dataset:
     # Save the dataset to a directory
     dataset.save_to_disk(save_dir)
 
-    return dataset
 
 if __name__ == "__main__":
-    # Load the training data
-    with open("data/01_raw/training_objects/training_contexts.json", 'r') as f:
-        data = json.load(f)
+
+    # Load the YAML configuration file
+    with open("conf/local.yml", "r") as yamlfile:
+        config = yaml.safe_load(yamlfile)  # Use safe_load to load the YAML configuration file safely
+
+    # Load the training data from the configuration file
+    data_training_params = config["training_params"]
 
     # Extract the documents from the loaded data
-    documents = data["documents"]
+    with open(data_training_params["context_qa"], 'r') as f:
+        data = json.load(f)
 
     # Prepare the training data
-    train_data = prepare_train_data(documents=documents, 
-                                    output_path="data/02_intermediate/training_data/train_data.json")
+    documents = data["documents"]
+    prepare_train_data(documents=documents, 
+                       output_path=data_training_params["training_json"])
     
-    # Load and format the training data
-    dataset = load_and_format_data()
+    # Prepare training dataset
+    load_and_format_data(data_file=data_training_params["context_qa"],
+                         save_dir=data_training_params["training_dataset"])
 
 

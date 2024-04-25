@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, AutoModel, pipeline
 from torch import Tensor
 from datasets import Dataset
-from typing import List, Any, Tuple
+from typing import List, Any, Tuple, Dict
 import torch
 import os
 
@@ -52,7 +52,10 @@ class DocumentAssistant:
 
         return samples["TEXT_FILE_PATH"]
     
-    def question_answering(self, question: str, paths_list: List[str]) -> Tuple[str, List[str]]:
+    def question_answering(self, 
+                           question: str, 
+                           paths_list: List[str], 
+                           fine_tuned_model: Dict[str, Any] = {"use_fine_tuned_model" : False, "model_path" : None}) -> Tuple[str, List[str]]:
         """
 
         """
@@ -64,7 +67,10 @@ class DocumentAssistant:
                 context += "\n" + file.read()
             file_names.append(os.path.basename(path))
 
-        qa_pipeline = pipeline("question-answering", model = "deepset/roberta-base-squad2")
+        if fine_tuned_model["use_fine_tuned_model"]:
+            qa_pipeline = pipeline("question-answering", model = fine_tuned_model["model_path"])
+        else:
+            qa_pipeline = pipeline("question-answering", model = "deepset/roberta-base-squad2")
         
         result = qa_pipeline(question=question, context=context, max_answer_len=100)
         
