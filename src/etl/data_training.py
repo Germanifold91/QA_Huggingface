@@ -1,3 +1,4 @@
+""" This module prepares the training data for a question answering model. """
 from typing import List, Dict, Union
 from datasets import Dataset
 import json
@@ -7,6 +8,17 @@ import yaml
 def prepare_train_data(documents: List[Dict[str, Union[str, List[str], List[Dict[str, str]]]]], 
                        output_path: str) -> Dict[str, List[Dict[str, List[Dict[str, List[Dict[str, str]]]]]]]:
     """
+    Prepares training data for a question answering model.
+
+    Args:
+        documents (List[Dict[str, Union[str, List[str], List[Dict[str, str]]]]]): A list of documents containing titles, contexts, and questions with answers.
+        output_path (str): The path to save the prepared training data.
+
+    Returns:
+        Dict[str, List[Dict[str, List[Dict[str, List[Dict[str, str]]]]]]]: The prepared training data in a dictionary format.
+
+    Raises:
+        None
     """
     data = []
     question_id = 1  # Initialize question ID counter
@@ -53,6 +65,14 @@ def prepare_train_data(documents: List[Dict[str, Union[str, List[str], List[Dict
 
 def load_and_format_data(data_file: str, save_dir: str) -> Dataset:
     """
+    Loads data from a JSON file, formats it, and converts it to a Hugging Face Dataset.
+    
+    Args:
+        data_file (str): The path to the JSON file containing the data.
+        save_dir (str): The directory where the formatted dataset will be saved.
+        
+    Returns:
+        Dataset: The formatted dataset.
     """
     # Load the data from a JSON file
     with open(data_file, 'r') as f:
