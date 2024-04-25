@@ -13,3 +13,8 @@ The problem in question tackled by this repo is divided in two stages:
 
 ## 3.1. General Flow
 
+<p align="center">
+<img width="533" alt="Pipeline LOKA" src="https://github.com/Germanifold91/loka_qa/assets/102771524/bc96830d-ab0d-4be4-846e-9fa8d12d0818"> 
+</p>
+
+## 3.2. Data Processing
