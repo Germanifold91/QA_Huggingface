@@ -1,3 +1,4 @@
+""" This module contains functions for tracking the execution of a question answering pipeline. """
 from typing import Dict
 import pandas as pd
 import json
@@ -5,6 +6,14 @@ import json
 def track_execution(qa_pipe_output: Dict[str, any], 
                     json_file: str) -> None:
     """
+    Track the execution of a question answering pipeline and save the tracking data to a JSON file.
+
+    Args:
+        qa_pipe_output (Dict[str, any]): The output of the question answering pipeline.
+        json_file (str): The path to the JSON file where the tracking data will be saved.
+
+    Returns:
+        None
     """
     # Create a list to store the tracking data
     tracking_data = []
