@@ -1,8 +1,20 @@
+""" Fine-tunes a pre-trained model for question answering using a dataset. """
 from transformers import TrainingArguments, Trainer, AutoModelForQuestionAnswering
 from datasets import Dataset, load_from_disk
 import yaml
 
 def train_model(dataset, model_name, output_dir):
+    """
+    Trains a model for question answering using the provided dataset.
+
+    Args:
+        dataset (dict): A dictionary containing the training and validation datasets.
+        model_name (str): The name or path of the pre-trained model to be fine-tuned.
+        output_dir (str): The directory where the trained model will be saved.
+
+    Returns:
+        None
+    """
     # Load the model
     model = AutoModelForQuestionAnswering.from_pretrained(model_name)
 
