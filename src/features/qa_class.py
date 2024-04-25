@@ -64,6 +64,13 @@ class DocumentAssistant:
 
     def get_embeddings(self, text_list: List[str]) -> Tensor:
         """
+        Retrieves the embeddings for a list of input texts.
+
+        Args:
+            text_list (List[str]): A list of input texts.
+
+        Returns:
+            Tensor: The embeddings of the input texts.
 
         """
         encoded_input = self.tokenizer(
