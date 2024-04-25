@@ -1,3 +1,4 @@
+"""Data processing functions for converting Markdown files to text and creating a master dataset."""
 from typing import Dict, Any
 from bs4 import BeautifulSoup
 from datasets import Dataset
@@ -10,6 +11,24 @@ def create_file_table(folder_path: str,
                       destination_path: str = None, 
                       save: bool = False) -> pd.DataFrame:
     """
+    Creates a DataFrame containing the file paths of all the Markdown files (.md) 
+    found in the specified folder path.
+
+    Args:
+        folder_path (str): The path to the folder containing the Markdown files.
+        destination_path (str, optional): The path to save the DataFrame as a CSV file. 
+            Defaults to None.
+        save (bool, optional): Whether to save the DataFrame as a CSV file. 
+            Defaults to False.
+
+    Raises:
+        ValueError: If the provided folder path does not exist.
+        ValueError: If save is True but destination_path is not provided.
+        IOError: If failed to save the DataFrame as a CSV file.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the file paths.
+
     """
     if not os.path.isdir(folder_path):
         raise ValueError(f"The provided folder path does not exist: {folder_path}")
@@ -42,13 +61,33 @@ def create_file_table(folder_path: str,
 
 def save_text_to_file(text_content: str, 
                       output_path: str) -> None:
-    """Save text content to a specified path."""
+    """
+    Save the given text content to a file at the specified output path.
+    
+    Args:
+        text_content (str): The text content to be saved.
+        output_path (str): The path where the file will be saved.
+    
+    Returns:
+        None
+    """
     with open(output_path, 'w', encoding='utf-8') as text_file:
         text_file.write(text_content)
 
 
 def markdown_file_to_text_and_save(md_file_path: str, output_dir: str) -> str:
     """
+    Converts a Markdown file to plain text, saves it to a new file, and returns the path of the new file.
+
+    Args:
+        md_file_path (str): The path to the Markdown file.
+        output_dir (str): The directory where the output file will be saved.
+
+    Returns:
+        str: The path of the new text file.
+
+    Raises:
+        Exception: If there is an error while processing or saving the file.
     """
     try:
         # Read the contents of the Markdown file
@@ -82,7 +121,19 @@ def process_and_update_df(master_df: pd.DataFrame,
                           save: bool, 
                           saving_path: str) -> pd.DataFrame:
     """
+    Process and update the given DataFrame by applying a conversion and saving function to each row.
 
+    Args:
+        master_df (pd.DataFrame): The DataFrame to be processed and updated.
+        output_dir (str): The directory where the converted files will be saved.
+        save (bool): A flag indicating whether to save the updated DataFrame.
+        saving_path (str): The path to save the updated DataFrame.
+
+    Returns:
+        pd.DataFrame: The processed and updated DataFrame.
+
+    Raises:
+        IOError: If there is an error while saving the updated DataFrame.
     """
     # Apply the conversion and saving function to each row and store the new file paths
     master_df['TEXT_FILE_PATH'] = master_df['FILE_PATH'].apply(lambda x: markdown_file_to_text_and_save(x, output_dir))
@@ -101,7 +152,21 @@ def arrow_dataset(master_df: pd.DataFrame,
                   text_column_name:str, 
                   save_path: str) -> pd.DataFrame:
     """
+    Process the data in the master DataFrame by reading text content from files specified in the file_path_column.
+    The text content is then stored in the text_column_name column of the DataFrame.
+    Finally, the updated DataFrame is converted to a Dataset and saved to the specified directory.
 
+    Args:
+        master_df (pd.DataFrame): The master DataFrame containing the data to be processed.
+        file_path_column (str): The name of the column in master_df that contains the file paths.
+        text_column_name (str): The name of the column in master_df where the text content will be stored.
+        save_path (str): The directory where the Dataset will be saved.
+
+    Returns:
+        pd.DataFrame: The updated master DataFrame with the text content added.
+
+    Raises:
+        FileNotFoundError: If a file specified in the file_path_column does not exist.
     """
     # Check if the text_column_name already exists, if not, initialize it
     if text_column_name not in master_df.columns:
@@ -128,7 +193,17 @@ def arrow_dataset(master_df: pd.DataFrame,
 
 def generate_master(de_params: Dict[str,Any]) -> None:
     """
+    Generate the master dataset by performing a series of steps:
+    1. Load parameters from the dictionary.
+    2. Create a CSV file that lists paths to individual text files.
+    3. Update the CSV file with the actual text content of the files.
+    4. Convert the updated CSV file into a Hugging Face Arrow dataset.
 
+    Args:
+        de_params (Dict[str,Any]): A dictionary containing the necessary parameters.
+
+    Returns:
+        None
     """
     print("Loading Params")
     # Read parameters from the dictionary
