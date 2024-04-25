@@ -1,3 +1,4 @@
+""" This script processes a dataset and a question using the DocumentAssistant model. """
 from src.features.qa_class import DocumentAssistant
 from src.model_tracking.tracking import track_execution  
 from argparse import ArgumentParser
