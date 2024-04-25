@@ -17,4 +17,39 @@ The problem in question tackled by this repo is divided in two stages:
 <img width="533" alt="Pipeline LOKA" src="https://github.com/Germanifold91/loka_qa/assets/102771524/bc96830d-ab0d-4be4-846e-9fa8d12d0818"> 
 </p>
 
-## 3.2. Data Processing
+## 3.2. ETL
+### 3.2.1. Data Processing
+The script `src/etl/data_processing.py` encompasses all the processes responsible for converting raw files [documentation] into a format that is compatible for analysis by pre-trained models. Specifically, this set of functions performs the following tasks:
+- **Transformation** of raw files from markdown to text files for model processing.
+- **Construction** of dataset with metadata about documents.
+### 3.2.2. Data Training
+
+The process of fine-tuning a pre-trained model with new information requires that the training data adhere to a specific structure. The functions contained in `src/etl/data_training.py` process the input data and output both a `Dataset` dataframe and a JSON file formatted to meet the requirements of various QA models. It is important to note that both of these functions accept input structured such that each question is paired with a corresponding context and an answer located within that text. Additionally, the creation of these context-question-answer triplets is typically labor-intensive.
+
+```json
+
+{
+    "documents": [
+        {
+            "title": "France",
+            "contexts": [
+                "France, officially known as the French Republic, is a country located in Western Europe. It is known for its rich history, culture, and cuisine.",
+                "Paris is the capital city of France and is famous for its iconic landmarks such as the Eiffel Tower and the Louvre Museum.",
+                "French is the official language of France and is spoken by the majority of the population."
+            ],
+            "questions_answers": [
+                {
+                    "context_index": 0,
+                    "question": "Where is France located?",
+                    "answer": "a country located in Western Europe"
+                },
+                {
+                    "context_index": 2,
+                    "question": "What language is spoken by the majority of the population in France?",
+                    "answer": "spoken by the majority of the population"
+                },
+            ]
+       }
+   ]
+}
+```
