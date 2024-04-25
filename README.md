@@ -58,6 +58,9 @@ The process of fine-tuning a pre-trained model with new information requires tha
 The DocumentAssistant class, defined in the `src/feature/qa_class.py module, is designed for document processing and question answering functionalities. This class utilizes the transformers library from Huggingface to encode text and generate embeddings that facilitate deep understanding and interactions with textual data.
 
 **Key Features**
-- **Tokenization and Modeling:** Utilizes AutoTokenizer for text encoding and AutoModel for generating text embeddings, ensuring that the textual data is processed with high accuracy.
+- **Tokenization and Modeling:** Utilizes AutoTokenizer for text encoding and AutoModel for generating text embeddings.
 - **Document Processing and Search:** Implements methods to convert texts into embeddings and search these embeddings to find relevant texts based on a given question.
-- **Question Answering:** Capable of answering questions using either the base model or a fine-tuned model, depending on the use case requirements. This is enhanced through an intelligent pipeline that integrates text searching with question answering.
+- **Question Answering:** Capable of answering questions using either the base model or a fine-tuned model, depending on the use case requirements. This is enhanced through a pipeline that integrates text searching with question answering.
+
+### 3.3.2. QA Pipeline
+The primary functionality of this project is encapsulated in the script [`src/feature/qa_pipe.py`](src/feature/qa_pipe.py). Executing this script initiates the main function which creates an instance of the DocumentAssistant class. This class is responsible for processing an input question and returning both the answer and the relevant documents associated with it. This setup ensures a seamless integration of text processing and retrieval functionalities to address user queries effectively.
