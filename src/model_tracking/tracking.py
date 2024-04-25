@@ -1,10 +1,11 @@
 """ This module contains functions for tracking the execution of a question answering pipeline. """
+
 from typing import Dict
 import pandas as pd
 import json
 
-def track_execution(qa_pipe_output: Dict[str, any], 
-                    json_file: str) -> None:
+
+def track_execution(qa_pipe_output: Dict[str, any], json_file: str) -> None:
     """
     Track the execution of a question answering pipeline and save the tracking data to a JSON file.
 
@@ -20,12 +21,12 @@ def track_execution(qa_pipe_output: Dict[str, any],
 
     # Create a dictionary with the tracking data
     tracking_entry = {
-        'question': qa_pipe_output['question'],
-        'answer': qa_pipe_output['answer'],
-        'document_path': qa_pipe_output['document_path'],
-        'score': qa_pipe_output['score'],
-        'start': qa_pipe_output['start'],
-        'end': qa_pipe_output['end']
+        "question": qa_pipe_output["question"],
+        "answer": qa_pipe_output["answer"],
+        "document_path": qa_pipe_output["document_path"],
+        "score": qa_pipe_output["score"],
+        "start": qa_pipe_output["start"],
+        "end": qa_pipe_output["end"],
     }
 
     # Append the tracking entry to the list
@@ -33,7 +34,7 @@ def track_execution(qa_pipe_output: Dict[str, any],
 
     # Check if the JSON file already exists
     try:
-        with open(json_file, 'r') as f:
+        with open(json_file, "r") as f:
             existing_json = json.load(f)
     except FileNotFoundError:
         # Create an empty list if the file doesn't exist
@@ -44,7 +45,7 @@ def track_execution(qa_pipe_output: Dict[str, any],
     existing_json.extend(tracking_data)
 
     # Save the JSON object to the file
-    with open(json_file, 'w') as f:
+    with open(json_file, "w") as f:
         json.dump(existing_json, f)
 
     print("Tracking data saved successfully.")

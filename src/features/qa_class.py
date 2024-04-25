@@ -1,4 +1,5 @@
 """ The qa_class module provides the DocumentAssistant class for document processing and question answering. """
+
 from transformers import AutoTokenizer, AutoModel, pipeline
 from torch import Tensor
 from datasets import Dataset
@@ -18,22 +19,24 @@ class DocumentAssistant:
     Methods:
         mean_pooling(model_output: Tensor, attention_mask: Tensor) -> Tensor:
             Computes the mean pooling of the token embeddings.
-        
+
         get_embeddings(text_list: List[str]) -> Tensor:
             Encodes a list of texts and returns their embeddings.
-        
+
         text_search(master_dataset: Dataset, question: str, num_sources: int = 1) -> List[Any]:
             Searches for relevant texts in the master dataset based on a given question.
-        
+
         question_answering(question: str, paths_list: List[str], fine_tuned_model: Dict[str, Any] = {"use_fine_tuned_model" : False, "model_path" : None}) -> Tuple[str, List[str]]:
             Performs question answering on a list of texts and returns the answer, file names, score, start, and end positions.
-        
+
         answer_pipeline(master_dataset: Dataset, question: str) -> Tuple[str, List[str]]:
             Executes the text search and question answering pipeline and returns the answer and file names.
 
     """
 
-    def __init__(self, model_ckpt: str = "sentence-transformers/multi-qa-mpnet-base-dot-v1"):
+    def __init__(
+        self, model_ckpt: str = "sentence-transformers/multi-qa-mpnet-base-dot-v1"
+    ):
         self.tokenizer = AutoTokenizer.from_pretrained(model_ckpt)
         self.model = AutoModel.from_pretrained(model_ckpt)
 
@@ -80,8 +83,10 @@ class DocumentAssistant:
             model_output = self.model(**encoded_input)
 
         return self.mean_pooling(model_output, encoded_input["attention_mask"])
-    
-    def text_search(self, master_dataset: Dataset, question: str, num_sources: int = 1) -> List[Any]:
+
+    def text_search(
+        self, master_dataset: Dataset, question: str, num_sources: int = 1
+    ) -> List[Any]:
         """
         Searches for relevant texts in the master dataset based on a given question.
 
@@ -106,11 +111,16 @@ class DocumentAssistant:
         )
 
         return samples["TEXT_FILE_PATH"]
-    
-    def question_answering(self, 
-                           question: str, 
-                           paths_list: List[str], 
-                           fine_tuned_model: Dict[str, Any] = {"use_fine_tuned_model" : False, "model_path" : None}) -> Tuple[str, List[str]]:
+
+    def question_answering(
+        self,
+        question: str,
+        paths_list: List[str],
+        fine_tuned_model: Dict[str, Any] = {
+            "use_fine_tuned_model": False,
+            "model_path": None,
+        },
+    ) -> Tuple[str, List[str]]:
         """
         Performs question answering on a list of texts and returns the answer, file names, score, start, and end positions.
 
@@ -127,20 +137,32 @@ class DocumentAssistant:
         file_names = []
 
         for path in paths_list:
-            with open(path, 'r', encoding='utf-8') as file:
+            with open(path, "r", encoding="utf-8") as file:
                 context += "\n" + file.read()
             file_names.append(os.path.basename(path))
 
         if fine_tuned_model["use_fine_tuned_model"]:
-            qa_pipeline = pipeline("question-answering", model = fine_tuned_model["model_path"])
+            qa_pipeline = pipeline(
+                "question-answering", model=fine_tuned_model["model_path"]
+            )
         else:
-            qa_pipeline = pipeline("question-answering", model = "deepset/roberta-base-squad2")
-        
+            qa_pipeline = pipeline(
+                "question-answering", model="deepset/roberta-base-squad2"
+            )
+
         result = qa_pipeline(question=question, context=context, max_answer_len=100)
-        
-        return result['answer'], file_names, result['score'], result['start'], result['end']
-    
-    def answer_pipeline(self, master_dataset: Dataset, question: str) -> Tuple[str, List[str]]:
+
+        return (
+            result["answer"],
+            file_names,
+            result["score"],
+            result["start"],
+            result["end"],
+        )
+
+    def answer_pipeline(
+        self, master_dataset: Dataset, question: str
+    ) -> Tuple[str, List[str]]:
         """
         Executes the text search and question answering pipeline and returns the answer and file names.
 
@@ -153,10 +175,12 @@ class DocumentAssistant:
 
         """
         texts_paths = self.text_search(master_dataset=master_dataset, question=question)
-        
-        answer, files_names, score, start, end = self.question_answering(question=question, paths_list=texts_paths)
+
+        answer, files_names, score, start, end = self.question_answering(
+            question=question, paths_list=texts_paths
+        )
 
         # Replace '.txt' with '.md' in the file names
-        md_files_names = [fname.replace('.txt', '.md') for fname in files_names]
-        
+        md_files_names = [fname.replace(".txt", ".md") for fname in files_names]
+
         return answer, md_files_names, score, start, end

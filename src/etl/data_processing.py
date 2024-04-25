@@ -1,4 +1,5 @@
 """Data processing functions for converting Markdown files to text and creating a master dataset."""
+
 from typing import Dict, Any
 from bs4 import BeautifulSoup
 from datasets import Dataset
@@ -7,18 +8,19 @@ import os
 import markdown
 import yaml
 
-def create_file_table(folder_path: str, 
-                      destination_path: str = None, 
-                      save: bool = False) -> pd.DataFrame:
+
+def create_file_table(
+    folder_path: str, destination_path: str = None, save: bool = False
+) -> pd.DataFrame:
     """
-    Creates a DataFrame containing the file paths of all the Markdown files (.md) 
+    Creates a DataFrame containing the file paths of all the Markdown files (.md)
     found in the specified folder path.
 
     Args:
         folder_path (str): The path to the folder containing the Markdown files.
-        destination_path (str, optional): The path to save the DataFrame as a CSV file. 
+        destination_path (str, optional): The path to save the DataFrame as a CSV file.
             Defaults to None.
-        save (bool, optional): Whether to save the DataFrame as a CSV file. 
+        save (bool, optional): Whether to save the DataFrame as a CSV file.
             Defaults to False.
 
     Raises:
@@ -44,10 +46,8 @@ def create_file_table(folder_path: str,
                 except Exception as e:
                     print(f"Error processing file {file}: {e}")
 
-    file_table = pd.DataFrame({
-        'FILE_PATH': file_paths
-    })
-    
+    file_table = pd.DataFrame({"FILE_PATH": file_paths})
+
     if save:
         if destination_path is None:
             raise ValueError("Destination path must be provided if save is True.")
@@ -59,19 +59,18 @@ def create_file_table(folder_path: str,
     return file_table
 
 
-def save_text_to_file(text_content: str, 
-                      output_path: str) -> None:
+def save_text_to_file(text_content: str, output_path: str) -> None:
     """
     Save the given text content to a file at the specified output path.
-    
+
     Args:
         text_content (str): The text content to be saved.
         output_path (str): The path where the file will be saved.
-    
+
     Returns:
         None
     """
-    with open(output_path, 'w', encoding='utf-8') as text_file:
+    with open(output_path, "w", encoding="utf-8") as text_file:
         text_file.write(text_content)
 
 
@@ -91,21 +90,23 @@ def markdown_file_to_text_and_save(md_file_path: str, output_dir: str) -> str:
     """
     try:
         # Read the contents of the Markdown file
-        with open(md_file_path, 'r', encoding='utf-8') as file:
+        with open(md_file_path, "r", encoding="utf-8") as file:
             md_content = file.read()
 
         # Convert Markdown to HTML
         html_content = markdown.markdown(md_content)
 
         # Extract plain text from HTML
-        text_content = BeautifulSoup(html_content, 'html.parser').get_text(separator='\n')
+        text_content = BeautifulSoup(html_content, "html.parser").get_text(
+            separator="\n"
+        )
 
         # Create the output directory if it doesn't exist
         os.makedirs(output_dir, exist_ok=True)
 
         # Generate the new file name by replacing the extension with '.txt'
         base_name = os.path.basename(md_file_path)
-        new_file_name = os.path.splitext(base_name)[0] + '.txt'
+        new_file_name = os.path.splitext(base_name)[0] + ".txt"
         text_file_path = os.path.join(output_dir, new_file_name)
 
         # Save the text content to the output file
@@ -114,12 +115,11 @@ def markdown_file_to_text_and_save(md_file_path: str, output_dir: str) -> str:
         return text_file_path
     except Exception as e:
         raise Exception(f"Failed to process and save file due to: {e}")
-    
 
-def process_and_update_df(master_df: pd.DataFrame, 
-                          output_dir: str, 
-                          save: bool, 
-                          saving_path: str) -> pd.DataFrame:
+
+def process_and_update_df(
+    master_df: pd.DataFrame, output_dir: str, save: bool, saving_path: str
+) -> pd.DataFrame:
     """
     Process and update the given DataFrame by applying a conversion and saving function to each row.
 
@@ -136,21 +136,25 @@ def process_and_update_df(master_df: pd.DataFrame,
         IOError: If there is an error while saving the updated DataFrame.
     """
     # Apply the conversion and saving function to each row and store the new file paths
-    master_df['TEXT_FILE_PATH'] = master_df['FILE_PATH'].apply(lambda x: markdown_file_to_text_and_save(x, output_dir))
+    master_df["TEXT_FILE_PATH"] = master_df["FILE_PATH"].apply(
+        lambda x: markdown_file_to_text_and_save(x, output_dir)
+    )
 
     if save:
         try:
             master_df.to_csv(saving_path, index=False)
         except Exception as e:
             raise IOError(f"Failed to save the updated DataFrame: {e}")
-    
+
     return master_df
 
 
-def arrow_dataset(master_df: pd.DataFrame, 
-                  file_path_column: str, 
-                  text_column_name:str, 
-                  save_path: str) -> pd.DataFrame:
+def arrow_dataset(
+    master_df: pd.DataFrame,
+    file_path_column: str,
+    text_column_name: str,
+    save_path: str,
+) -> pd.DataFrame:
     """
     Process the data in the master DataFrame by reading text content from files specified in the file_path_column.
     The text content is then stored in the text_column_name column of the DataFrame.
@@ -170,13 +174,13 @@ def arrow_dataset(master_df: pd.DataFrame,
     """
     # Check if the text_column_name already exists, if not, initialize it
     if text_column_name not in master_df.columns:
-        master_df[text_column_name] = pd.Series(dtype='str')
+        master_df[text_column_name] = pd.Series(dtype="str")
 
     # Iterate through the DataFrame and read the text content from each file
     for index, row in master_df.iterrows():
         file_path = row[file_path_column]
         if os.path.isfile(file_path):
-            with open(file_path, 'r', encoding='utf-8') as file:
+            with open(file_path, "r", encoding="utf-8") as file:
                 text_content = file.read()
             master_df.at[index, text_column_name] = text_content
         else:
@@ -191,7 +195,7 @@ def arrow_dataset(master_df: pd.DataFrame,
     return master_df
 
 
-def generate_master(de_params: Dict[str,Any]) -> None:
+def generate_master(de_params: Dict[str, Any]) -> None:
     """
     Generate the master dataset by performing a series of steps:
     1. Load parameters from the dictionary.
@@ -215,32 +219,41 @@ def generate_master(de_params: Dict[str,Any]) -> None:
 
     print(f"Creating CSV table and saving it as {csv_path}")
     # Step 2: Create a CSV file that lists paths to individual text files
-    file_table = create_file_table(folder_path=documents_paths, 
-                                   destination_path=csv_path, 
-                                   save=save_csv)
-    
+    file_table = create_file_table(
+        folder_path=documents_paths, destination_path=csv_path, save=save_csv
+    )
+
     print(f"Updating CSV table and saving it as {csv_path}")
     # Step 3: Update the CSV file with the actual text content of the files
-    updated_table = process_and_update_df(master_df=file_table, 
-                                          output_dir=text_files_path, 
-                                          save=save_csv,
-                                          saving_path=csv_path)
-    
+    updated_table = process_and_update_df(
+        master_df=file_table,
+        output_dir=text_files_path,
+        save=save_csv,
+        saving_path=csv_path,
+    )
+
     print(f"Creating and saving arrow dataset to {arrow_path}")
     # Step 4: Convert the updated CSV file into a Hugging Face Arrow dataset
-    arrow_dataset(master_df=updated_table,
-                  file_path_column="TEXT_FILE_PATH",
-                  text_column_name="TEXT",
-                  save_path=arrow_path)
-    
+    arrow_dataset(
+        master_df=updated_table,
+        file_path_column="TEXT_FILE_PATH",
+        text_column_name="TEXT",
+        save_path=arrow_path,
+    )
+
+
 if __name__ == "__main__":
 
     # Load the YAML configuration file
     with open("conf/local.yml", "r") as yamlfile:
-        config = yaml.safe_load(yamlfile)  # Use safe_load to load the YAML configuration file safely
+        config = yaml.safe_load(
+            yamlfile
+        )  # Use safe_load to load the YAML configuration file safely
 
     de_params = config.get("data_processing_params")
     if de_params is None:
-        raise ValueError("Invalid YAML configuration file. Missing 'data_processing_params' section.")
+        raise ValueError(
+            "Invalid YAML configuration file. Missing 'data_processing_params' section."
+        )
 
     generate_master(de_params)

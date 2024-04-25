@@ -1,7 +1,9 @@
 """ Fine-tunes a pre-trained model for question answering using a dataset. """
+
 from transformers import TrainingArguments, Trainer, AutoModelForQuestionAnswering
 from datasets import Dataset, load_from_disk
 import yaml
+
 
 def train_model(dataset, model_name, output_dir):
     """
@@ -50,8 +52,10 @@ if __name__ == "__main__":
 
     # Load the YAML configuration file
     with open("conf/local.yml", "r") as yamlfile:
-        config = yaml.safe_load(yamlfile)  # Use safe_load to load the YAML configuration file safely
-        
+        config = yaml.safe_load(
+            yamlfile
+        )  # Use safe_load to load the YAML configuration file safely
+
     # Load the training data
     dataset_path = config["training_params"]["training_dataset"]
     dataset = load_from_disk(dataset_path)
