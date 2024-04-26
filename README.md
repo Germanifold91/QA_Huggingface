@@ -67,12 +67,32 @@ The DocumentAssistant class, defined in the [`src/features/qa_class.py`](src/fea
 ### 3.3.2. QA Pipeline
 The primary functionality of this project is encapsulated in the script [`src/features/qa_pipe.py`](src/features/qa_pipe.py). Executing this script initiates the main function which creates an instance of the DocumentAssistant class. This class is responsible for processing an input question and returning both the answer and the relevant documents associated with it. This setup ensures a seamless integration of text processing and retrieval functionalities to address user queries effectively.
 
-### 3.4. Model Tracking
+## 3.4. Model Tracking
 Upon execution of the question answering pipeline the function `track_execution()` part of [`src/model_tracking/tracking.py`](src/model_tracking/tracking.py) will save the input question as well as the outputs associated to the model such as the answer as well as:
 - **Path to Relevant Document**
 - **Score**
 - **Start index of the answer**
 - **End index of the answer**
+
+## 3.5. Local File Configuration
+The execution of the project requires to declare all the relevant paths and parameters in a yaml file located at [`conf/local.yml`](conf/local.yml), as follows:
+```yaml
+# config.yaml
+data_processing_params:
+  documents_path: /data/01_raw/md_files
+  save_csv: False
+  csvdf_path: /data/02_intermediate/tables/master_table.csv
+  text_files_path: /data/02_intermediate/txt_files/
+  arrowdf_path: /data/02_intermediate/tables/text_df
+
+training_params:
+  context_qa: /data/01_raw/training_objects/training_contexts.json
+  training_json: /data/02_intermediate/training_data/training_data.json
+  training_dataset: /data/02_intermediate/training_dataset
+
+model_tracking_params:
+  tracking_json_path: /data/04_model_output/tracking.json
+```
 
 # 4. System Execution
 
