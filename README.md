@@ -25,7 +25,7 @@ The script [`src/etl/data_processing.py`](src/etl/data_processing.py) encompasse
 - **Construction** of dataset with metadata about documents.
 
 ### 3.2.2. Data Training
-The process of fine-tuning a pre-trained model with new information requires that the training data adhere to a specific structure. The functions contained in [`src/etl/data_training.py`](src/etl/data_training.py) process the input data and output both a `Dataset` dataframe and a JSON file formatted to meet the requirements of various QA models. It is important to note that both of these functions accept input structured such that each question is paired with a corresponding context and an answer located within that text. Additionally, the creation of these context-question-answer triplets is typically labor-intensive.
+The process of fine-tuning a pre-trained model with new information requires that the training data adhere to a specific structure. The functions contained in [`src/etl/data_training.py`](src/etl/data_training.py) process the input data and output as a `Dataset` dataframe and a JSON file formatted to meet the requirements of various QA models. It is important to note that both of these functions accept input structured such that each question is paired with a corresponding context and an answer located within that text. Additionally, the creation of these context-question-answer triplets is typically labor-intensive.
 
 ```json
 
