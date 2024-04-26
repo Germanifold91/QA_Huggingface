@@ -163,5 +163,38 @@ Fine Tunning of the model can be performed through:
 make tune-model
 ```
 
+# 5. Suggested Integration on AWS Architecture
+
+This project utilizes AWS services to create a scalable, efficient, and robust system that can handle simultaneous requests, dynamically improve performance, and manage the creation of training datasets. Below is the revised architecture including the integration of Amazon SageMaker Ground Truth for dataset generation:
+
+## 5.1. User Interaction
+Users interact with the system via a web interface or an API. **Amazon API Gateway** serves as the gateway for all user requests, routing them to the appropriate AWS services.
+
+## 5.2. Document Processing and Storage
+- **AWS Lambda**: Lambda functions are initially triggered to process markdown documents upon upload or update. These functions read the documents from Amazon S3, convert them into structured text files, and store these processed files back in S3. This processing occurs only once for each document unless they are updated, ensuring efficiency in resource use.
+- **Amazon S3**: Acts as the central repository for both the original markdown documents and the processed text files. This setup provides secure, durable, and scalable storage.
+- 
+## 5.3. Retrieving Processed Documents
+- **AWS Lambda**: For answering user queries, Lambda functions are triggered by API Gateway. These functions quickly retrieve the pre-processed text files from S3 based on the user's request. Since the documents are already processed, the retrieval and response are fast and efficient.
+The Lambda function uses the processed data to answer the user’s query using the Hugging Face model, ensuring that the responses are accurate and delivered promptly.
+
+## 5.4. Logging User Queries and Responses
+- **Amazon DynamoDB**: After generating a response to a user's question, details of the interaction, including the user's question, the answer, the score, and the start and end index of each answer within the document, are logged in a structured JSON format in DynamoDB.
+- **AWS Lambda**: The same Lambda function that retrieves and processes the user’s query will also handle logging the details to DynamoDB. This integration ensures that every interaction is captured in real-time, allowing for detailed analytics and monitoring.
+
+## 5.5. Training Dataset Generation with Amazon SageMaker Ground Truth
+- **Amazon SageMaker Ground Truth**: To facilitate the fine-tuning of the Hugging Face model, Ground Truth is used to create accurate training datasets. This service allows you to employ human annotators, automated data labeling using machine learning, and a combination of both to generate high-quality datasets from your stored documents.
+- Integration: Ground Truth can directly access documents stored in S3, utilize annotations and metadata logged in DynamoDB, and process data to generate datasets optimized for training machine learning models.
+
+## 5.6. Model Fine-Tuning
+- **AWS SageMaker**: Utilizes the datasets prepared by Ground Truth for training and fine-tuning the Hugging Face model. SageMaker provides the necessary computational resources and tools to manage the training process effectively.
+- Model Updates: Once fine-tuning is complete, the updated model is deployed automatically to replace the older version, ensuring that the system benefits from continuous learning and improvement.
+
+## 5.7. Scalability and Efficiency
+- Automatic Scaling: AWS Lambda, DynamoDB, SageMaker, and Ground Truth automatically scale based on the demand. This feature ensures that the system can handle peak loads efficiently and adapt to increasing data and processing requirements without any manual intervention.
+- Cost-Effectiveness: By automating the creation of training datasets and model fine-tuning, and leveraging serverless and managed services, the system remains cost-effective while continuously improving.
+
+
+
 
 
