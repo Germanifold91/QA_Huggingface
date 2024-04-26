@@ -30,6 +30,11 @@ data-training:
 	@echo "Running data training generation script..."
 	conda run -n $(CONDA_ENV_NAME) python src/etl/data_training.py
 
+# Fine tune model with training data
+tune-model:
+	@echo "Running model fine tuning script..."
+	conda run -n $(CONDA_ENV_NAME) python src/model_tuning/fine_tuning.py
+
 # Run question answering pipeline
 process-question:
 	conda run -n $(CONDA_ENV_NAME) python src/features/qa_pipe.py --question "$(QUESTION)"
