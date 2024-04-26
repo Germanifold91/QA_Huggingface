@@ -67,12 +67,33 @@ The DocumentAssistant class, defined in the [`src/features/qa_class.py`](src/fea
 ### 3.3.2. QA Pipeline
 The primary functionality of this project is encapsulated in the script [`src/features/qa_pipe.py`](src/features/qa_pipe.py). Executing this script initiates the main function which creates an instance of the DocumentAssistant class. This class is responsible for processing an input question and returning both the answer and the relevant documents associated with it. This setup ensures a seamless integration of text processing and retrieval functionalities to address user queries effectively.
 
+**Sample Execution**
+<p align="center">
+<img width="952" alt="Screenshot 2024-04-25 at 9 56 35 PM" src="https://github.com/Germanifold91/loka_qa/assets/102771524/e1a030e7-66ad-4220-90c4-b0d7fa641e31">
+</p>
+
 ## 3.4. Model Tracking
 Upon execution of the question answering pipeline the function `track_execution()` part of [`src/model_tracking/tracking.py`](src/model_tracking/tracking.py) will save the input question as well as the outputs associated to the model such as the answer as well as:
 - **Path to Relevant Document**
 - **Score**
 - **Start index of the answer**
 - **End index of the answer**
+  
+**Sample Log**
+```json
+[
+    {
+        "question": "What are all AWS regions where SageMaker is available?",
+        "answer": "East/West",
+        "document_path": [
+            "sagemaker-compliance.md"
+        ],
+        "score": 0.0060913050547242165,
+        "start": 273,
+        "end": 282
+    }
+]
+```
 
 ## 3.5. Local File Configuration
 The execution of the project requires to declare all the relevant paths and parameters in a yaml file located at [`conf/local.yml`](conf/local.yml), as follows:
