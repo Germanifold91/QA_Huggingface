@@ -78,7 +78,10 @@ Upon execution of the question answering pipeline the function `track_execution(
 - **Score**
 - **Start index of the answer**
 - **End index of the answer**
-  
+
+
+> 💡 **This could be beneficial for identifying areas where efforts should be focused when developing future training datasets.**
+
 **Sample Log**
 ```json
 [
@@ -125,7 +128,7 @@ cd loka_qa
 
 
 ## 4.2. Setup
-****Note**: As of **2024/04/25** the [installation of FAISS must be through the use of conda](https://github.com/facebookresearch/faiss/blob/main/INSTALL.md) for the appropiate functioning of this method. 
+> 📝 **Note**: As of **2024/04/25** the [installation of FAISS must be through the use of conda](https://github.com/facebookresearch/faiss/blob/main/INSTALL.md) for the appropiate functioning of this method. 
 
 To set up the project environment to run the project, follow these steps:
 
