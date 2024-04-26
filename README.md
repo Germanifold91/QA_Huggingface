@@ -35,7 +35,7 @@ The process of fine-tuning a pre-trained model with new information requires tha
             "title": "sagemaker-projects",
             "contexts": [
                 "SageMaker Projects help organizations set up and standardize developer environments for data scientists and CI/CD systems for MLOps engineers.",
-                "No. SageMaker pipelines are standalone entities just like training jobs, processing jobs, and other SageMaker jobs. You can create, update, and run                         pipelines directly within a notebook by using the SageMaker Python SDK without using a SageMaker project.",
+                "No. SageMaker pipelines are standalone entities just like training jobs, processing jobs, and other SageMaker jobs. You can create, update, and run pipelines directly within a notebook by using the SageMaker Python SDK without using a SageMaker project.",
             ],
             "questions_answers": [
                 {
