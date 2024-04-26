@@ -32,22 +32,21 @@ The process of fine-tuning a pre-trained model with new information requires tha
 {
     "documents": [
         {
-            "title": "France",
+            "title": "sagemaker-projects",
             "contexts": [
-                "France, officially known as the French Republic, is a country located in Western Europe. It is known for its rich history, culture, and cuisine.",
-                "Paris is the capital city of France and is famous for its iconic landmarks such as the Eiffel Tower and the Louvre Museum.",
-                "French is the official language of France and is spoken by the majority of the population."
+                "SageMaker Projects help organizations set up and standardize developer environments for data scientists and CI/CD systems for MLOps engineers.",
+                "No. SageMaker pipelines are standalone entities just like training jobs, processing jobs, and other SageMaker jobs. You can create, update, and run                         pipelines directly within a notebook by using the SageMaker Python SDK without using a SageMaker project.",
             ],
             "questions_answers": [
                 {
                     "context_index": 0,
-                    "question": "Where is France located?",
-                    "answer": "a country located in Western Europe"
+                    "question": "What is SageMaker",
+                    "answer": "help organizations set up and standardize developer environments for data scientists"
                 },
                 {
-                    "context_index": 2,
-                    "question": "What language is spoken by the majority of the population in France?",
-                    "answer": "spoken by the majority of the population"
+                    "context_index": 1,
+                    "question": "Is it neccesary to create a project in order to run a SageMaker pipeline?",
+                    "answer": "No. SageMaker pipelines are standalone entities just like training jobs, processing jobs, and other SageMaker jobs."
                 },
             ]
        }
