@@ -120,7 +120,7 @@ class DocumentAssistant:
             "use_fine_tuned_model": False,
             "model_path": None,
         },
-    ) -> Tuple[str, List[str]]:
+    ) -> Tuple[str, List[str], float, int, int]:
         """
         Performs question answering on a list of texts and returns the answer, file names, score, start, and end positions.
 
@@ -162,7 +162,7 @@ class DocumentAssistant:
 
     def answer_pipeline(
         self, master_dataset: Dataset, question: str
-    ) -> Tuple[str, List[str]]:
+    ) -> Tuple[str, List[str], float, int, int]:
         """
         Executes the text search and question answering pipeline and returns the answer and file names.
 

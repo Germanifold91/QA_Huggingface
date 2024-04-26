@@ -8,7 +8,7 @@ from typing import List, Tuple
 import yaml
 
 
-def main(dataset: Dataset, question: str) -> Tuple[str, List[str]]:
+def main(dataset: Dataset, question: str) -> Tuple[str, List[str], float, int, int]:
     """
     Process the given dataset and question using the DocumentAssistant model.
 
