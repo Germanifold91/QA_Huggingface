@@ -165,7 +165,7 @@ make tune-model
 
 # 5. Suggested Integration on AWS Architecture
 
-This project utilizes AWS services to create a scalable, efficient, and robust system that can handle simultaneous requests, dynamically improve performance, and manage the creation of training datasets. Below is the revised architecture including the integration of Amazon SageMaker Ground Truth for dataset generation:
+A possible implementation of this system on AWS could be structured as follows. Below is the revised architecture including the integration of Amazon SageMaker Ground Truth for dataset generation:
 
 ## 5.1. User Interaction
 Users interact with the system via a web interface or an API. **Amazon API Gateway** serves as the gateway for all user requests, routing them to the appropriate AWS services.
