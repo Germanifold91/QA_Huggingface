@@ -1,15 +1,15 @@
 # config.yaml
 data_processing_params:
-  documents_path: /data/01_raw/md_files
-  save_csv: False
-  csvdf_path: /data/02_intermediate/tables/master_table.csv
-  text_files_path: /data/02_intermediate/txt_files/
-  arrowdf_path: /data/02_intermediate/tables/text_df
+  documents_path: /data/01_raw/md_files # Path to the markdown files
+  save_csv: False # Save the csv file
+  csvdf_path: /data/02_intermediate/tables/master_table.csv # Path to save the csv file with metadata of the markdown files
+  text_files_path: /data/02_intermediate/txt_files/ # Path to save the converted markdown files to text files
+  arrowdf_path: /data/02_intermediate/tables/text_df # Path to save the arrow file with the text data
 
 training_params:
-  context_qa: /data/01_raw/training_objects/training_contexts.json
-  training_json: /data/02_intermediate/training_data/training_data.json
-  training_dataset: /data/02_intermediate/training_dataset
+  context_qa: /data/01_raw/training_objects/training_contexts.json # Path to the training contexts
+  training_json: /data/02_intermediate/training_data/training_data.json # Path to save the training data in specified format
+  training_dataset: /data/02_intermediate/training_dataset # Path to save the training dataset
 
 model_tracking_params:
-  tracking_json_path: /data/04_model_output/tracking.json
+  tracking_json_path: /data/04_model_output/tracking.json # Path to save the tracking json file
